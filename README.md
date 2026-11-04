@@ -112,17 +112,17 @@ cp .env.example .env
 Sesuaikan nilai `DATABASE_URL` dengan database PostgreSQL lokal atau cloud Anda:
 ```env
 # Contoh PostgreSQL Lokal:
-DATABASE_URL="postgresql://postgres:password@localhost:5432/taskmanagement?schema=public"
+DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE?schema=public"
 
 # Atau gunakan PostgreSQL Cloud Gratis (Neon / Supabase):
-# DATABASE_URL="postgresql://user:password@ep-cool-server.neon.tech/neondb?sslmode=require"
+# DATABASE_URL="postgresql://USER:PASSWORD@HOST/DATABASE?sslmode=require"
 ```
 
 ### 3. Migrasi Database & Seeding Data
 Jalankan perintah berikut untuk membuat tabel dan mengisi data percontohan awal:
 ```bash
-# Push skema Prisma ke database PostgreSQL
-pnpm db:push
+# Terapkan migrasi yang tersimpan di prisma/migrations
+pnpm db:migrate
 
 # Generate Prisma Client
 pnpm db:generate
@@ -141,7 +141,7 @@ Buka browser di [http://localhost:3000](http://localhost:3000).
 
 ## 🚢 Panduan Deployment (Vercel & Neon PostgreSQL)
 
-Aplikasi ini siap di-deploy secara cuma-cuma (*free tier*) ke **Vercel** dan **Neon Database**:
+Aplikasi ini dapat di-deploy ke **Vercel** dengan database PostgreSQL seperti Neon atau Supabase. Ini adalah demo publik tanpa autentikasi: siapa pun yang membuka aplikasi dapat melihat dan mengubah daftar tugas. Jangan simpan data pribadi atau rahasia.
 
 1. **Buat Database PostgreSQL di Cloud**:
    - Daftar di [Neon.tech](https://neon.tech/) atau [Supabase](https://supabase.com/).
@@ -154,17 +154,21 @@ Aplikasi ini siap di-deploy secara cuma-cuma (*free tier*) ke **Vercel** dan **N
    git remote add origin https://github.com/YOUR_USERNAME/taskpilot.git
    git push -u origin main
    ```
-3. **Deploy di Vercel**:
+3. **Siapkan environment variables di Vercel**:
    - Masuk ke dashboard [Vercel](https://vercel.com/) dan klik **Add New Project**.
    - Import repository GitHub Anda.
-   - Pada bagian **Environment Variables**, tambahkan:
-     - `DATABASE_URL`: Masukkan Connection String dari Neon/Supabase Anda.
-   - Klik **Deploy**.
-4. **Push Schema ke Database Production**:
-   Jalankan dari komputer lokal Anda dengan mengarahkan `.env` ke database production sementara, atau jalankan:
-   ```bash
-   DATABASE_URL="<CONNECTION_STRING_PRODUCTION>" npx prisma db push
-   ```
+   - Pada bagian **Environment Variables**, tambahkan `DATABASE_URL` dengan connection string PostgreSQL.
+   - Atur variabel untuk environment yang akan digunakan (**Production**, dan **Preview** bila diperlukan). Hindari memakai database produksi untuk Preview.
+4. **Terapkan migrasi ke database**:
+   - Sebelum aplikasi menerima traffic, arahkan `DATABASE_URL` lokal ke database yang akan digunakan (misalnya dengan memperbarui `.env` secara sementara).
+   - Jalankan:
+     ```bash
+     pnpm db:migrate:deploy
+     ```
+   - Jangan gunakan `prisma db push` untuk deployment; migrasi tersimpan di repository dan `migrate deploy` menerapkannya tanpa membuat perubahan skema interaktif.
+5. **Deploy di Vercel**:
+   - Klik **Deploy** setelah environment variable dan migrasi siap.
+   - Build command default `pnpm build` menjalankan `prisma generate && next build`; migrasi database sengaja dijalankan secara terpisah.
 
 ---
 
