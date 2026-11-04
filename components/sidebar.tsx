@@ -32,7 +32,7 @@ export function Sidebar({ className, onNavigate }: SidebarProps) {
     <aside
       className={cn(
         "flex h-full w-[230px] flex-col border-r border-border bg-sidebar select-none",
-        className
+        className,
       )}
     >
       {/* Brand Header */}
@@ -43,9 +43,6 @@ export function Sidebar({ className, onNavigate }: SidebarProps) {
         <div className="flex flex-col">
           <span className="text-xs font-semibold tracking-tight text-foreground">
             TaskPilot
-          </span>
-          <span className="text-[10px] text-muted-foreground font-mono">
-            v1.0.0
           </span>
         </div>
       </div>
@@ -66,13 +63,15 @@ export function Sidebar({ className, onNavigate }: SidebarProps) {
                 "group flex items-center gap-2.5 rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors",
                 item.active
                   ? "bg-zinc-200/60 text-zinc-900 font-semibold"
-                  : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
+                  : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900",
               )}
             >
               <Icon
                 className={cn(
                   "h-4 w-4 transition-colors",
-                  item.active ? "text-zinc-900" : "text-zinc-500 group-hover:text-zinc-900"
+                  item.active
+                    ? "text-zinc-900"
+                    : "text-zinc-500 group-hover:text-zinc-900",
                 )}
               />
               <span>{item.name}</span>
@@ -91,4 +90,3 @@ export function Sidebar({ className, onNavigate }: SidebarProps) {
     </aside>
   );
 }
-

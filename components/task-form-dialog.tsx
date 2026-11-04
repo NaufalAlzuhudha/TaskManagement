@@ -134,7 +134,7 @@ export function TaskFormDialog({
             </Label>
             <Input
               id="title"
-              placeholder="e.g. Implement database migrations"
+              placeholder="Tambahkan judul tugas..."
               {...form.register("title")}
               disabled={isPending}
             />
@@ -163,7 +163,9 @@ export function TaskFormDialog({
               <Label htmlFor="status">Status</Label>
               <Select
                 value={form.watch("status")}
-                onValueChange={(val) => form.setValue("status", val as TaskStatus)}
+                onValueChange={(val) =>
+                  form.setValue("status", val as TaskStatus)
+                }
                 disabled={isPending}
               >
                 <SelectTrigger id="status">
@@ -223,8 +225,8 @@ export function TaskFormDialog({
               {isPending
                 ? "Menyimpan..."
                 : isEditing
-                ? "Simpan Perubahan"
-                : "Buat Task"}
+                  ? "Simpan Perubahan"
+                  : "Buat Task"}
             </Button>
           </DialogFooter>
         </form>
