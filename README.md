@@ -1,36 +1,172 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TaskPilot — Minimalist Task Management SaaS
 
-## Getting Started
+A clean, modern, scalable, and responsive **Task Management Web Application** designed with a product-oriented SaaS aesthetic (inspired by Linear, Notion, and Vercel). Built using Next.js 15 (App Router), TypeScript, Tailwind CSS, shadcn/ui, PostgreSQL, and Prisma ORM.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🚀 Live Demo & Repository
+- **Live URL**: [Deploy on Vercel](#deployment-guide-vercel--neon)
+- **Tech Stack**: Next.js 15, TypeScript, Tailwind CSS, shadcn/ui, Prisma ORM, PostgreSQL
+
+---
+
+## ✨ Fitur Utama
+
+### 1. Dashboard Overview
+- **Statistik Real-time**: Total tasks, Todo, In Progress, Completed, dan rasio penyelesaian (completion rate).
+- **Visual Analytics**: Grafik batang distribusi status dan grafik lingkaran tingkat prioritas (menggunakan Recharts).
+- **Upcoming Deadlines**: Menampilkan daftar tugas dengan tenggat waktu terdekat dan indikator keterlambatan (overdue).
+- **Recent Tasks**: Menampilkan tugas-tugas terbaru yang ditambahkan ke sistem.
+
+### 2. Task Management (CRUD Lengkap)
+- **Create**: Tambah tugas baru dengan judul, deskripsi, status, tingkat prioritas, dan batas waktu deadline.
+- **Read**: Tabel daftar tugas interaktif dan modal detail tugas lengkap.
+- **Update**: Edit tugas kapan saja serta fitur **Quick Status Change** langsung dari menu dropdown.
+- **Delete**: Hapus tugas dengan dialog konfirmasi (*Alert Dialog*) untuk mencegah penghapusan yang tidak disengaja.
+
+### 3. Search, Filter, & Sorting
+- **Search**: Pencarian instan berdasarkan judul atau deskripsi tugas.
+- **Status Filter**: Filter berdasarkan *Semua*, *Todo*, *In Progress*, atau *Completed*.
+- **Priority Filter**: Filter berdasarkan tingkat urgensi (*Low*, *Medium*, *High*).
+- **Deadline Filter**: Filter berdasarkan *Hari Ini*, *7 Hari Ke Depan*, dan *Terlewat (Overdue)*.
+- **Multi-criteria Sorting**: Pengurutan berdasarkan tanggal dibuat (terbaru/terlama), deadline terdekat/terjauh, dan nama A-Z.
+
+### 4. UI/UX Design System
+- **Minimalist Aesthetic**: Menghindari elemen dekoratif berlebihan, bayangan tebal, dan gradien tajam.
+- **Subtle Badges**: Status dan prioritas menggunakan warna lembut (*subtle blue, amber, rose, emerald, neutral zinc*).
+- **Responsive Layout**: Sidebar navigasi desktop dan drawer navigasi mobile yang rapi.
+
+---
+
+## 🛠️ Tech Stack & Dependencies
+
+| Layer | Teknologi |
+| :--- | :--- |
+| **Framework** | [Next.js 15 (App Router)](https://nextjs.org/) |
+| **Language** | [TypeScript](https://www.typescriptlang.org/) |
+| **Styling** | [Tailwind CSS](https://tailwindcss.com/) |
+| **UI Primitives** | [shadcn/ui](https://ui.shadcn.com/) / Radix UI |
+| **Icons** | [Lucide React](https://lucide.dev/) |
+| **Database** | [PostgreSQL](https://www.postgresql.org/) |
+| **ORM** | [Prisma ORM](https://www.prisma.io/) |
+| **Form & Validation** | [React Hook Form](https://react-hook-form.com/) + [Zod](https://zod.dev/) |
+| **Notifications** | [Sonner](https://sonner.emilkowal.ski/) |
+| **Date Handling** | [date-fns](https://date-fns.org/) |
+| **Charts** | [Recharts](https://recharts.org/) |
+
+---
+
+## 📁 Struktur Folder Project
+
+```
+├── actions/              # Next.js Server Actions (Database queries & mutations)
+│   └── tasks.ts
+├── app/                  # Next.js App Router (Layout, Pages, Styling)
+│   ├── globals.css
+│   ├── layout.tsx
+│   ├── page.tsx          # Dashboard page
+│   └── tasks/
+│       └── page.tsx      # Task list & management page
+├── components/           # UI Components
+│   ├── ui/               # shadcn/ui primitives (Button, Dialog, Table, Select, dll)
+│   ├── dashboard-charts.tsx
+│   ├── header.tsx
+│   ├── sidebar.tsx
+│   ├── stat-card.tsx
+│   ├── task-delete-dialog.tsx
+│   ├── task-detail-dialog.tsx
+│   ├── task-filters.tsx
+│   ├── task-form-dialog.tsx
+│   ├── task-priority-badge.tsx
+│   ├── task-status-badge.tsx
+│   ├── task-table.tsx
+│   └── tasks-view.tsx
+├── lib/                  # Utilities & Prisma Client singleton
+│   ├── prisma.ts
+│   └── utils.ts
+├── prisma/               # Schema database & Seeding script
+│   ├── schema.prisma
+│   └── seed.ts
+├── schemas/              # Zod validation schemas
+│   └── task.ts
+└── types/                # TypeScript interface & types
+    └── index.ts
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 💻 Panduan Menjalankan Secara Lokal
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 1. Clone Repository & Install Dependency
+```bash
+git clone https://github.com/username/task-management.git
+cd task-management
+pnpm install
+```
 
-## Learn More
+### 2. Konfigurasi Environment Variables
+Salin file `.env.example` menjadi `.env`:
+```bash
+cp .env.example .env
+```
+Sesuaikan nilai `DATABASE_URL` dengan database PostgreSQL lokal atau cloud Anda:
+```env
+# Contoh PostgreSQL Lokal:
+DATABASE_URL="postgresql://postgres:password@localhost:5432/taskmanagement?schema=public"
 
-To learn more about Next.js, take a look at the following resources:
+# Atau gunakan PostgreSQL Cloud Gratis (Neon / Supabase):
+# DATABASE_URL="postgresql://user:password@ep-cool-server.neon.tech/neondb?sslmode=require"
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 3. Migrasi Database & Seeding Data
+Jalankan perintah berikut untuk membuat tabel dan mengisi data percontohan awal:
+```bash
+# Push skema Prisma ke database PostgreSQL
+pnpm db:push
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Generate Prisma Client
+pnpm db:generate
 
-## Deploy on Vercel
+# Isi data contoh untuk demo portofolio
+pnpm db:seed
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 4. Jalankan Development Server
+```bash
+pnpm dev
+```
+Buka browser di [http://localhost:3000](http://localhost:3000).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 🚢 Panduan Deployment (Vercel & Neon PostgreSQL)
+
+Aplikasi ini siap di-deploy secara cuma-cuma (*free tier*) ke **Vercel** dan **Neon Database**:
+
+1. **Buat Database PostgreSQL di Cloud**:
+   - Daftar di [Neon.tech](https://neon.tech/) atau [Supabase](https://supabase.com/).
+   - Buat project baru dan salin *Connection String* PostgreSQL yang diberikan.
+2. **Push Repository ke GitHub**:
+   ```bash
+   git init
+   git add .
+   git commit -m "feat: complete TaskPilot application"
+   git remote add origin https://github.com/YOUR_USERNAME/taskpilot.git
+   git push -u origin main
+   ```
+3. **Deploy di Vercel**:
+   - Masuk ke dashboard [Vercel](https://vercel.com/) dan klik **Add New Project**.
+   - Import repository GitHub Anda.
+   - Pada bagian **Environment Variables**, tambahkan:
+     - `DATABASE_URL`: Masukkan Connection String dari Neon/Supabase Anda.
+   - Klik **Deploy**.
+4. **Push Schema ke Database Production**:
+   Jalankan dari komputer lokal Anda dengan mengarahkan `.env` ke database production sementara, atau jalankan:
+   ```bash
+   DATABASE_URL="<CONNECTION_STRING_PRODUCTION>" npx prisma db push
+   ```
+
+---
+
+## 📄 Lisensi
+MIT License — Bebas digunakan dan dimodifikasi untuk proyek portofolio pribadi.
